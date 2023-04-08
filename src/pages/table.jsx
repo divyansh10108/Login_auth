@@ -1,14 +1,18 @@
 import { useState, useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
-
+import { useRouter } from "next/router"
 function Table(props) {
   const [data, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortConfig, setSortConfig] = useState({ key: null, direction: null });
+  const router = useRouter();
 
   useEffect(() => {
   async function fetchData() {
     try {
+      // if(!props.token){
+      //   router.push("/")
+      // }
       const response = await fetch(
         "https://frontendtestapi.staging.fastjobs.io/data",
         {
@@ -23,7 +27,7 @@ function Table(props) {
     } catch (error) {
       console.error(error);
       // Redirect to "/" in case of error
-      Router.push("/");
+      router.push("/");
     }
   }
 
@@ -43,6 +47,9 @@ function Table(props) {
   };
  
   const sortedData = () => {
+    if (!Array.isArray(data) || !data.length) {
+      return [];
+    }
     let sortedData = [...data];
     if (sortConfig !== null) {
       sortedData.sort((a, b) => {
@@ -122,7 +129,7 @@ function Table(props) {
             {filteredData.map((item, index) => (
               <tr
                 key={item.id}
-                className={`${index % 2 === 0 ? "bg-gray-100" : ""}`}
+                className={`${index % 2 === 0 ? "bg-gray-100" : ""} animate-slideUpCubiBezier animation-delay-2`}
               >
                 <td className="p-4">{item.first_name}</td>
                 <td className="p-4">{item.last_name}</td>

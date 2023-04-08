@@ -10,6 +10,7 @@ export default function Login() {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState(null);
 
   const handleUsernameChange = (e) =>{ 
     setUsername(e.target.value)
@@ -44,23 +45,26 @@ export default function Login() {
               console.log(data); 
             });
           } else {
+            setError(true);
           }
         })
         .catch((error) => {
           console.error(error);
+          setError(true);
         });
     } else {
-      alert('Please check your username and password');
+      setError(true);
+      // alert('Please check your username and password');
     }
   };
 
 return (
-  <div className="flex min-h-screen">
+  <div className="flex  min-h-screen">
     <div className="w-2/3 bg-blue-600 p-8 relative">
       {/* content for the left 2/3 of the page goes here */}
-      <div className='mx-10'>
-        <Image src={Logo} className='mx-6 my-5'/> 
-        <div className='absolute top-1/4 space-y-7 font-poppins'>
+      <div className='mx-10 '>
+        <Image src={Logo} className='mx-6 my-5 animate-slideUpCubiBezier animation-delay-2'/> 
+        <div className='absolute top-1/4 space-y-7 font-poppins animate-slideUpCubiBezier animation-delay-2'>
           <h3 className='text-white text-3xl flex '>Congratulations</h3>
           <div className=' space-y-3 py-5'>
           <h3 className='text-white font-poppins text-4xl '>
@@ -156,7 +160,7 @@ return (
     
     <div className="w-1/3 absolute h-full  left-2/3  bg-gray-900 p-8 flex justify-center items-center">
    
-      <form onSubmit={handleSubmit} className="w-full">
+      <form onSubmit={handleSubmit}  className="w-full animate-slideUpCubiBezier animation-delay-2">
         <h3 className="text-white font-poppins font-semibold text-2xl mb-6">Login to your account</h3>
         <div className="mb-4">
           <label htmlFor="username" className="block text-white font-medium mb-2">Username:</label>
@@ -167,6 +171,9 @@ return (
           <input type="password" id="password" value={password} onChange={handlePasswordChange} className="w-full rounded-md py-2 px-3 bg-gray-800 text-white" />
         </div>
         <button type="submit" className="bg-blue-200 text-dark py-2 px-3 rounded-md hover:bg-blue-300 transition-colors h-full w-full">Log in</button>
+        <div className={`${!error ? "hidden" : ""} text-white`}>
+          INCORRECT PASSWORD OR EMAIL
+        </div>
       </form>
     </div>
   </div>
