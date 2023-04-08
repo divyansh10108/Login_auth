@@ -7,21 +7,28 @@ function Table(props) {
   const [sortConfig, setSortConfig] = useState({ key: null, direction: null });
 
   useEffect(() => {
-    async function fetchData() {
+  async function fetchData() {
+    try {
       const response = await fetch(
         "https://frontendtestapi.staging.fastjobs.io/data",
         {
           headers: {
             Authorization: `Bearer ${props.token}`,
-          },credentials:"include"
+          },
+          credentials: "include"
         }
       );
       const jsonData = await response.json();
       setData(jsonData);
+    } catch (error) {
+      console.error(error);
+      // Redirect to "/" in case of error
+      Router.push("/");
     }
+  }
 
-    fetchData();
-  }, [props.token]);
+  fetchData();
+}, [props.token]);
 
   const handleSort = (key) => {
     let direction = "ascending";
@@ -63,7 +70,7 @@ function Table(props) {
 
   return (
     <div className="flex flex-col items-center">
-      <h1 className="text-xl font-bold mb-2">Table</h1>
+      <h1 className="text-xl items-left font-bold mb-2">Graphic Design</h1>
       <hr className="border-gray-400 mb-4 w-full" />
       <div className="w-3/4 flex flex-col items-center">
         <div class="w-full md:w-1/3 flex items-center border-b border-gray-300 py-2">
@@ -101,7 +108,7 @@ function Table(props) {
                 className="cursor-pointer"
                 onClick={() => handleSort("email")}
               >
-                Email
+                @ Email
               </th>
               <th
                 className="cursor-pointer"
